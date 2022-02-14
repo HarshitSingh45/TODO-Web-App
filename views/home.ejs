@@ -1,10 +1,238 @@
-<html>
-    <head>
-        <title>
-            <%= title %>
-        </title>
-    </head>
-    <body>
-        <h1>TODO-APP / <%= title %></h1>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <style>
+         body{
+             text-align: center;
+             background-image: url('/images/bckimgfi.jfif');
+             background-repeat: no-repeat;
+         }
+     </style>
+</head>
+<body>
+    <div id="logo">
+        <br>
+        <img src="/images/logo.png" alt="logo" height="100px" width="300px">
+    </div>
+    <br><br>
+    <div id="rem-entry-container">
+    <form action="/create-reminder" method="post" id="reminder-form">
+        <div id="des-container">
+            <br>
+            <label for="reminder" style="font-size: 2rem; font-weight: bold;">Set Reminder Details</label><br>
+            <br><input type="text" id="txtarea" name="reminder" placeholder="Reminder description" required>
+            <!-- <textarea id="txtarea" rows="1" cols="45" name="comment" placeholder="Reminder description"></textarea> -->
+        </div>
+        <br>
+        <div id="rem-entry-details">
+          <div id="category-container">
+            
+            <label for="category" style="font-size: 1.5rem; font-weight: bold;">Category</label><br><br>
+            <select id="category" name="category" style="width: 70%; padding-block: 5px;" required>
+                <optgroup label="Choose category"></optgroup>
+                <div>
+                    <option value="Personal">Personal</option>
+                </div>
+                <div>
+                    <option value="Work">Work</option>
+                </div>
+                <div>
+                    <option value="College">College</option>
+                </div>
+                <div>
+                    <option value="Other">Other</option>
+                </div>
+                
+              </select>
+        </div>
+        <div id="date-container">
+            <label for="date" style="font-size: 1.5rem; font-weight: bold;">Date</label><br>
+            <br><input type="date" name="date" class="date-time" required><br>
+        </div>
+        <div id="date-container">
+            <label for="time" style="font-size: 1.5rem; font-weight: bold;">Time</label><br>
+            <br><input type="time" name="time" class="date-time" required><br>
+        </div>
+      </div>
+        <br><br><br>
+        <button class="btn blue" type="submit"> ADD TASK </button>&nbsp; &nbsp; &nbsp;
+        <br><br>
+    </form>
+    </div>
+    <br>
+    <h1>Current Reminders</h1>
+    <div id="to-remind-container">
+        <div id="rem-header">
+           <div id="rem-all" class="dis-rem-box" onclick="openBox(event, 'show-all-rem')">ALL</div>
+           <div id="rem-personal" class="dis-rem-box" onclick="openBox(event, 'show-personal-rem')">PERSONAL</div>
+           <div id="rem-work" class="dis-rem-box" onclick="openBox(event, 'show-work-rem')">WORK</div>
+           <div id="rem-college" class="dis-rem-box" onclick="openBox(event, 'show-college-rem')">COLLEGE</div>
+           <div id="rem-other" class="dis-rem-box" onclick="openBox(event, 'show-others-rem')">OTHERS</div>
+        </div>
+        <div id="show">
+            <div id="show-all-rem" class="show-rem">
+                <form action="">
+                    <% for( let i of reminders){ %>
+                    <div class ="reminder-container">
+                        <div class ="chkbox">
+                            <input type="checkbox" id="e1" name="entry1" value="" >
+                        </div>
+                        <div class ="reminder-details">
+                            <label for="e1"><%= i.reminderName %></label><br>
+                            <img src="/images/calendar.png" id="icon" alt="">
+                            <span style="font-size: 1.3rem;"><%= i.date %> <%= i.time %></span>
+                        </div>
+                        <div class ="rem-category">
+                            <% if(i.category == "Personal") { %>
+                                <button class="cat-btn blue">Personal</button>
+                            <% } %>
+
+                            <% if(i.category == "College") { %>
+                                <button class="cat-btn teal">College</button>
+                            <% } %>
+
+                            <% if(i.category == "Work") { %>
+                                <button class="cat-btn yellow">Work</button>
+                            <% } %>
+
+                            <% if(i.category == "Other") { %>
+                                <button class="cat-btn coral">Others</button>
+                            <% } %>
+                        </div>  
+                    </div>
+                    <% } %>
+                    <br><br>
+                    <div >
+                        <button class="btn red" style="margin: auto;"> DELETE TASKS </button>
+                    </div> 
+                    <br><br><br>
+                </form>
+            </div>
+            <div id="show-personal-rem" class="show-rem">
+                <form action="">
+                    <% for( let i of reminders){ %>
+                        <% if(i.category == "Personal") {%>
+                            <div class ="reminder-container">
+                                <div class ="chkbox">
+                                    <input type="checkbox" id="e1" name="entry1" value="" >
+                                </div>
+                                <div class ="reminder-details">
+                                    <label for="e1"><%= i.reminderName %></label><br>
+                                    <img src="/images/calendar.png" id="icon" alt="">
+                                    <span style="font-size: 1.3rem;"><%= i.date %> <%= i.time %></span>
+                                </div>
+                                <div class ="rem-category">
+                                    <% if(i.category == "Personal") { %>
+                                        <button class="cat-btn blue">Personal</button>
+                                    <% } %>
+                                </div>  
+                            </div>
+                        <% } %>
+                    <% } %>
+                    <br><br>
+                    <div >
+                        <button class="btn red" style="margin: auto;"> DELETE TASKS </button>
+                    </div> 
+                    <br><br><br>
+                </form>
+            </div>
+            <div id="show-work-rem" class="show-rem">
+                <form action="">
+                    <% for( let i of reminders){ %>
+                        <% if(i.category == "Work") {%>
+                            <div class ="reminder-container">
+                                <div class ="chkbox">
+                                    <input type="checkbox" id="e1" name="entry1" value="" >
+                                </div>
+                                <div class ="reminder-details">
+                                    <label for="e1"><%= i.reminderName %></label><br>
+                                    <img src="/images/calendar.png" id="icon" alt="">
+                                    <span style="font-size: 1.3rem;"><%= i.date %> <%= i.time %></span>
+                                </div>
+                                <div class ="rem-category">
+                                    <% if(i.category == "Work") { %>
+                                        <button class="cat-btn yellow">Work</button>
+                                    <% } %>
+                                </div>  
+                            </div>
+                        <% } %>
+                    <% } %>
+                    <br><br>
+                    <div >
+                        <button class="btn red" style="margin: auto;"> DELETE TASKS </button>
+                    </div> 
+                    <br><br><br>
+                </form>
+            </div>
+            <div id="show-college-rem" class="show-rem">
+                <form action="">
+                    <% for( let i of reminders){ %>
+                        <% if(i.category == "College") {%>
+                            <div class ="reminder-container">
+                                <div class ="chkbox">
+                                    <input type="checkbox" id="e1" name="entry1" value="" >
+                                </div>
+                                <div class ="reminder-details">
+                                    <label for="e1"><%= i.reminderName %></label><br>
+                                    <img src="/images/calendar.png" id="icon" alt="">
+                                    <span style="font-size: 1.3rem;"><%= i.date %> <%= i.time %></span>
+                                </div>
+                                <div class ="rem-category">
+                                    <% if(i.category == "College") { %>
+                                        <button class="cat-btn teal">College</button>
+                                    <% } %>
+                                </div>  
+                            </div>
+                        <% } %>
+                    <% } %>
+                    <br><br>
+                    <div >
+                        <button class="btn red" style="margin: auto;"> DELETE TASKS </button>
+                    </div> 
+                    <br><br><br>
+                </form>
+            </div>
+            <div id="show-others-rem" class="show-rem">
+                <form action="">
+                    <% for( let i of reminders){ %>
+                        <% if(i.category == "Other") {%>
+                            <div class ="reminder-container">
+                                <div class ="chkbox">
+                                    <input type="checkbox" id="e1" name="entry1" value="" >
+                                </div>
+                                <div class ="reminder-details">
+                                    <label for="e1"><%= i.reminderName %></label><br>
+                                    <img src="/images/calendar.png" id="icon" alt="">
+                                    <span style="font-size: 1.3rem;"><%= i.date %> <%= i.time %></span>
+                                </div>
+                                <div class ="rem-category">
+                                    <% if(i.category == "Other") { %>
+                                        <button class="cat-btn coral">Others</button>
+                                    <% } %>
+                                </div>  
+                            </div>
+                        <% } %>
+                    <% } %>
+                    <br><br>
+                    <div >
+                        <button class="btn red" style="margin: auto;"> DELETE TASKS </button>
+                    </div> 
+                    <br><br><br>
+                </form>
+            </div>
+        </div>
+        <br><br>
+        <!-- <div >
+            <button class="btn red" style="margin: auto;"> DELETE TASKS </button>
+        </div>   -->
+
+    </div>
+    
+    <script src="/scripts/home.js"></script>
+</body>
 </html>
