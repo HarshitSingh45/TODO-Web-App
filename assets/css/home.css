@@ -1,7 +1,8 @@
 body{
-    text-align: center;
-    background-image: url('bckimgfi.jfif');
-    background-repeat: no-repeat;
+    /* text-align: center; */
+    /* background-image: url('bckimgfi.jfif'); */
+    /* background-repeat: no-repeat; */
+    background-color: skyblue;
     /* background-attachment: fixed; */
     /* background-size: cover; */
 
@@ -91,11 +92,18 @@ body{
     border-bottom: 2px solid coral;
     display: flex;
     justify-content: space-between;
+    animation: fadeinout 0.75s;
+
+}
+@keyframes fadeinout {
+    from{opacity: 0;}
+    to{opacity: 1;}
 }
 .chkbox{
     display: inline-block;
     width: 5%;
     padding-top: 10px;
+    /* border-radius: 100%; */
     /* height: 50px; */
     /* border: 1px solid black; */
 
@@ -188,6 +196,7 @@ body{
     /* opacity: 0.4; */
     position: absolute;
     display: none;
+    /* animation: fadeinout 1s; */
     /* top: 0; */
     /* left: 0; */
 }
