@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDo</title>
+    <title>RemindMe</title>
+    <!-- linkinh this file with style.css -->
     <link rel="stylesheet" href="/css/home.css">
     <style>
+        /* styling the background of home page */
          body{
              text-align: center;
              background-image: url('/images/bckimgfi.jfif');
@@ -15,13 +17,17 @@
      </style>
 </head>
 <body>
-    <div id="logo">
+    <!-- div to contain logo -->
+    <div id="logo"> 
         <br>
         <img src="/images/logo.png" alt="logo" height="100px" width="300px">
     </div>
     <br><br>
+    <!-- container to take input from user -->
     <div id="rem-entry-container">
+    <!-- form will be sent to /create reminder using method post to hide sensitive details -->
     <form action="/create-reminder" method="post" id="reminder-form">
+        <!-- this conatiner stores the description of reminder -->
         <div id="des-container">
             <br>
             <label for="reminder" style="font-size: 2rem; font-weight: bold;">Set Reminder Details</label><br>
@@ -29,11 +35,13 @@
             <!-- <textarea id="txtarea" rows="1" cols="45" name="comment" placeholder="Reminder description"></textarea> -->
         </div>
         <br>
+        <!-- div to take input of categories date time -->
         <div id="rem-entry-details">
+          <!-- reminder category container -->
           <div id="category-container">
-            
             <label for="category" style="font-size: 1.5rem; font-weight: bold;">Category</label><br><br>
             <select id="category" name="category" style="width: 70%; padding-block: 5px;" required>
+                <!-- choose between different options to select category -->
                 <optgroup label="Choose category"></optgroup>
                 <div>
                     <option value="Personal">Personal</option>
@@ -51,55 +59,80 @@
               </select>
         </div>
         <div id="date-container">
+            <!-- container to take date input, user can either add date manually or using the calendar -->
             <label for="date" style="font-size: 1.5rem; font-weight: bold;">Date</label><br>
             <br><input type="date" name="date" class="date-time" required><br>
         </div>
         <div id="date-container">
+            <!-- container to take time input, user can either add time manually or using the scroller -->
             <label for="time" style="font-size: 1.5rem; font-weight: bold;">Time</label><br>
             <br><input type="time" name="time" class="date-time" required><br>
         </div>
       </div>
         <br><br><br>
+        <!-- button to submit data and send to /create reminder, now data will be added into database -->
         <button class="btn blue" type="submit"> ADD TASK </button>&nbsp; &nbsp; &nbsp;
         <br><br>
     </form>
     </div>
     <br>
     <h1>Upcoming Reminders</h1>
+    <!-- this div will show upcoming reminders, and you can view all and category wise reminders -->
     <div id="to-remind-container">
+        <!-- diff boxes are created to choose the reminder box that user want to see, it can be all , personal, etc -->
         <div id="rem-header">
+            <!-- on clicking on all , all reminders added yet will be displayed on the container just below this  -->
            <div id="rem-all" class="dis-rem-box" onclick="openBox(event, 'show-all-rem')">ALL</div>
+           <!-- by clicking on personal all personal reminders will open up in the div below -->
            <div id="rem-personal" class="dis-rem-box" onclick="openBox(event, 'show-personal-rem')">PERSONAL</div>
+           <!-- by clicking on work all work reminders will open up in the div below -->
            <div id="rem-work" class="dis-rem-box" onclick="openBox(event, 'show-work-rem')">WORK</div>
+           <!-- by clicking on college all college reminders will open up in the div below -->
            <div id="rem-college" class="dis-rem-box" onclick="openBox(event, 'show-college-rem')">COLLEGE</div>
+           <!-- by clicking on other all other reminders will open up in the div below -->
            <div id="rem-other" class="dis-rem-box" onclick="openBox(event, 'show-others-rem')">OTHERS</div>
         </div>
+        <!-- this div will display the reminders as the user click the divs above -->
         <div id="show">
+            <!-- container to show all reminders in database -->
             <div id="show-all-rem" class="show-rem">
+                <!-- form is created to send the id's of reminders which the user wants to delete -->
                 <form action="/delete-tasks" method="post">
+                    <!-- for loop is used to display the reminders which is fetch from the databse and display on screen one by one -->
                     <% for( let i of reminders){ %>
+                        <!-- this div contains all the info of single reminder -->
                         <div class ="reminder-container">
+                            <!-- checkbox is used to select the reminders which needs to be deleted -->
                             <div class ="chkbox">
                                 <input type="checkbox" id="e1" name="toDelete" value="<%= i._id %>" >
                             </div>
+                            <!-- this div contains the reminder info which the user has added -->
                             <div class ="reminder-details">
+                                <!-- reminder description -->
                                 <label for="e1"><%= i.reminderName %></label><br>
                                 <img src="/images/calendar.png" id="icon" alt="">
+                                <!-- reminder due date & time -->
                                 <span style="font-size: 1.3rem; color: rgb(17, 114, 226);">(<%= i.date %>) <%= i.time %></span>
                             </div>
+                            <!-- this div will display the category of reminder -->
+                            <!-- different color will be displayed for differenet categories, same category reminders will be displayed in same color -->
                             <div class ="rem-category">
+                                <!-- personal category reminders will be displayed in blue color -->
                                 <% if(i.category == "Personal") { %>
                                     <button class="cat-btn blue">Personal</button>
                                 <% } %>
     
+                                <!-- colllege category reminders will be displayed in teal color -->
                                 <% if(i.category == "College") { %>
                                     <button class="cat-btn teal">College</button>
                                 <% } %>
     
+                                <!-- work category reminders will be displayed in yellow color -->
                                 <% if(i.category == "Work") { %>
                                     <button class="cat-btn yellow">Work</button>
                                 <% } %>
     
+                                <!-- other category reminders will be displayed in coral color -->
                                 <% if(i.category == "Other") { %>
                                     <button class="cat-btn coral">Others</button>
                                 <% } %>
@@ -108,25 +141,38 @@
                     <% } %>
                     <br><br>
                     <div >
+                        <!-- on clicking this button , form will be submitted at /delete-tasks, and all the selected reminders will be deleted from db & will be removed from display  -->
                         <button class="btn red" style="margin: auto;" type="submit"> DELETE TASKS </button>
                     </div> 
                     <br><br><br>
                 </form>
             </div>
+             <!-- container to show all personal reminders from database -->
             <div id="show-personal-rem" class="show-rem">
+                <!-- form is created to send the id's of reminders which the user wants to delete -->
                 <form action="/delete-tasks" method="post">
+                    <!-- for loop is used to display the reminders which is fetch from the databse and display on screen one by one -->
                     <% for( let i of reminders){ %>
+                        <!-- if reminder fetched from db is of personal category then only proceed -->
                         <% if(i.category == "Personal") {%>
+                            <!-- this div contains all the info of single reminder -->
                             <div class ="reminder-container">
+                                <!-- checkbox is used to select the reminders which needs to be deleted -->
                                 <div class ="chkbox">
                                     <input type="checkbox" id="e1" name="toDelete" value="<%= i._id %>" >
                                 </div>
+                                <!-- this div contains the reminder info which the user has added -->
                                 <div class ="reminder-details">
+                                    <!-- reminder description -->
                                     <label for="e1"><%= i.reminderName %></label><br>
                                     <img src="/images/calendar.png" id="icon" alt="">
+                                    <!-- reminder due date & time -->
                                     <span style="font-size: 1.3rem; color: rgb(17, 114, 226);">(<%= i.date %>) <%= i.time %></span>
                                 </div>
+                                <!-- this div will display the category of reminder -->
+                                <!-- different color will be displayed for differenet categories, same category reminders will be displayed in same color -->
                                 <div class ="rem-category">
+                                    <!-- personal category reminder button will be displayed in blue color -->
                                     <% if(i.category == "Personal") { %>
                                         <button class="cat-btn blue">Personal</button>
                                     <% } %>
@@ -136,25 +182,38 @@
                     <% } %>
                     <br><br>
                     <div >
+                        <!-- on clicking this button , form will be submitted at /delete-tasks, and all the selected reminders will be deleted from db & will be removed from display  -->
                         <button class="btn red" style="margin: auto;"  type="submit"> DELETE TASKS </button>
                     </div> 
                     <br><br><br>
                 </form>
             </div>
+            <!-- container to show all work reminders from database -->
             <div id="show-work-rem" class="show-rem">
+                <!-- form is created to send the id's of reminders which the user wants to delete -->
                 <form action="/delete-tasks" method="post">
+                    <!-- for loop is used to display the reminders which is fetch from the databse and display on screen one by one -->
                     <% for( let i of reminders){ %>
+                        <!-- if reminder fetched from db is of work category then only proceed -->
                         <% if(i.category == "Work") {%>
+                            <!-- this div contains all the info of single reminder -->
                             <div class ="reminder-container">
+                                <!-- checkbox is used to select the reminders which needs to be deleted -->
                                 <div class ="chkbox">
                                     <input type="checkbox" id="e1" name="toDelete" value="<%= i._id %>" >
                                 </div>
+                                <!-- this div contains the reminder info which the user has added -->
                                 <div class ="reminder-details">
+                                    <!-- reminder description -->
                                     <label for="e1"><%= i.reminderName %></label><br>
                                     <img src="/images/calendar.png" id="icon" alt="">
+                                    <!-- reminder due date & time -->
                                     <span style="font-size: 1.3rem; color: rgb(17, 114, 226);">(<%= i.date %>) <%= i.time %></span>
                                 </div>
+                                <!-- this div will display the category of reminder -->
+                                <!-- different color will be displayed for differenet categories, same category reminders will be displayed in same color -->
                                 <div class ="rem-category">
+                                    <!-- work category reminder button will be displayed in yellow color -->
                                     <% if(i.category == "Work") { %>
                                         <button class="cat-btn yellow">Work</button>
                                     <% } %>
@@ -164,25 +223,38 @@
                     <% } %>
                     <br><br>
                     <div >
+                        <!-- on clicking this button , form will be submitted at /delete-tasks, and all the selected reminders will be deleted from db & will be removed from display  -->
                         <button class="btn red" style="margin: auto;"  type="submit"> DELETE TASKS </button>
                     </div> 
                     <br><br><br>
                 </form>
             </div>
+            <!-- container to show all college reminders from database -->
             <div id="show-college-rem" class="show-rem">
+                <!-- form is created to send the id's of reminders which the user wants to delete -->
                 <form action="/delete-tasks" method="post">
+                    <!-- for loop is used to display the reminders which is fetch from the databse and display on screen one by one -->
                     <% for( let i of reminders){ %>
+                        <!-- if reminder fetched from db is of college category then only proceed -->
                         <% if(i.category == "College") {%>
+                            <!-- this div contains all the info of single reminder -->
                             <div class ="reminder-container">
+                                <!-- checkbox is used to select the reminders which needs to be deleted -->
                                 <div class ="chkbox">
                                     <input type="checkbox" id="e1" name="toDelete" value="<%= i._id %>" >
                                 </div>
+                                <!-- this div contains the reminder info which the user has added -->
                                 <div class ="reminder-details">
+                                    <!-- reminder description -->
                                     <label for="e1"><%= i.reminderName %></label><br>
                                     <img src="/images/calendar.png" id="icon" alt="">
+                                    <!-- reminder due date & time -->
                                     <span style="font-size: 1.3rem; color: rgb(17, 114, 226);">(<%= i.date %>) <%= i.time %></span>
                                 </div>
+                                <!-- this div will display the category of reminder -->
+                                <!-- different color will be displayed for differenet categories, same category reminders will be displayed in same color -->
                                 <div class ="rem-category">
+                                    <!-- college category reminder button will be displayed in teal color -->
                                     <% if(i.category == "College") { %>
                                         <button class="cat-btn teal" >College</button>
                                     <% } %>
@@ -192,25 +264,38 @@
                     <% } %>
                     <br><br>
                     <div >
+                        <!-- on clicking this button , form will be submitted at /delete-tasks, and all the selected reminders will be deleted from db & will be removed from display  -->
                         <button class="btn red" style="margin: auto;"  type="submit"> DELETE TASKS </button>
                     </div> 
                     <br><br><br>
                 </form>
             </div>
+            <!-- container to show all others category reminders from database -->
             <div id="show-others-rem" class="show-rem">
+                <!-- form is created to send the id's of reminders which the user wants to delete -->
                 <form action="/delete-tasks" method="post">
+                    <!-- for loop is used to display the reminders which is fetch from the databse and display on screen one by one -->
                     <% for( let i of reminders){ %>
+                        <!-- if reminder fetched from db is of others category then only proceed -->
                         <% if(i.category == "Other") {%>
+                            <!-- this div contains all the info of single reminder -->
                             <div class ="reminder-container">
+                                <!-- checkbox is used to select the reminders which needs to be deleted -->
                                 <div class ="chkbox">
                                     <input type="checkbox" id="e1" name="toDelete" value="<%= i._id %>" >
                                 </div>
+                                <!-- this div contains the reminder info which the user has added -->
                                 <div class ="reminder-details">
+                                    <!-- reminder description -->
                                     <label for="e1"><%= i.reminderName %></label><br>
                                     <img src="/images/calendar.png" id="icon" alt="">
+                                    <!-- reminder due date & time -->
                                     <span style="font-size: 1.3rem; color: rgb(17, 114, 226);">(<%= i.date %>) <%= i.time %></span>
                                 </div>
+                                <!-- this div will display the category of reminder -->
+                                <!-- different color will be displayed for differenet categories, same category reminders will be displayed in same color -->
                                 <div class ="rem-category">
+                                    <!-- other category reminder button will be displayed in coral color -->
                                     <% if(i.category == "Other") { %>
                                         <button class="cat-btn coral">Others</button>
                                     <% } %>
@@ -220,6 +305,7 @@
                     <% } %>
                     <br><br>
                     <div >
+                        <!-- on clicking this button , form will be submitted at /delete-tasks, and all the selected reminders will be deleted from db & will be removed from display  -->
                         <button class="btn red" style="margin: auto;"  type="submit"> DELETE TASKS </button>
                     </div> 
                     <br><br><br>
@@ -227,12 +313,10 @@
             </div>
         </div>
         <br><br>
-        <!-- <div >
-            <button class="btn red" style="margin: auto;"> DELETE TASKS </button>
-        </div>   -->
+        
 
     </div>
-    
+    <!-- including script file -->
     <script src="/scripts/home.js"></script>
 </body>
 </html>

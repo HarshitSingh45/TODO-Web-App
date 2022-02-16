@@ -1,24 +1,17 @@
-const Reminder = require('../models/reminder');
-module.exports.home = function(req, res){
+const Reminder = require('../models/reminder'); // required reminder collection
+module.exports.home = function(req, res){  // exporting home module
+    //  find all the reminders in database & fetch
     Reminder.find({}, function(err, allReminders){
         if(err){
-            console.log('Error in fetching reminders from database');
+            //  if error occured in fetching reminder from database
+            console.log('Error in fetching reminders from database',err);
             return;
         }
-        
+        //  render home page and insert all the reminders fetched from the database and return back to home page
         return res.render('home',{
             title: 'Reminder App',
             reminders: allReminders
         });
     });
-    // return res.end('<h1> Express is up for todo app </h1>')
-    // return res.render('home',{
-        // title: 'Reminder app'
-    // });
+    
 }
-
-// you can add multiple actions
-
-/**
- module.exports.actionName = function(req, res){ };
- */
